@@ -12,14 +12,12 @@ class CoinsScreen extends Component {
 
     componentDidMount = async() => {
         this.setState({ loading: true });
-
         const res = await Http.instance.get("https://api.coinlore.net/api/tickers/");
         this.setState({coins: res.data, loading: false});
     }
 
-    handlePress = () => {
-        console.log("Go to detail", this.props);
-        this.props.navigation.navigate("CoinDetail");
+    handlePress = (coin) => {
+        this.props.navigation.navigate('CoinDetail', {coin});
     }
 
     render(){
@@ -38,7 +36,10 @@ class CoinsScreen extends Component {
               <FlatList
                 data={coins}
                 renderItem={({ item }) => 
-                    <CoinsItem item={item} />
+                    <CoinsItem 
+                        item={item} 
+                        onPress={() => this.handlePress(item)} 
+                    />
                 }
               />
           </View>      
